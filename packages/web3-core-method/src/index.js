@@ -462,7 +462,7 @@ var getWallet = function(from, accounts) {
 Method.prototype.buildCall = function() {
     var _this = this
     var method = this,
-        isSendTx = (method.name === 'sendTransaction' || method.name === 'sendRawTransaction'); // || method.call === 'personal_sendTransaction'
+        isSendTx = (/send(\w*)Transaction/.test(method.name)); // || method.call === 'personal_sendTransaction'
 
     // actual send function
     var send = function () {
