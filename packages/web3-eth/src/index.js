@@ -406,6 +406,13 @@ var Eth = function Eth() {
             params: 0
         }),
         new Method({
+            name: 'getCommittee',
+            call: () => _this.currentProvider.genCall('getCommittee'),
+            params: 1,
+            limit: 'etrue',
+            inputFormatter: [formatter.inputBlockNumberFormatter]
+        }),
+        new Method({
             name: 'getPastLogs',
             call: () => _this.currentProvider.genCall('getLogs'),
             params: 1,
