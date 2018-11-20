@@ -259,6 +259,27 @@ var outputBlockFormatter = function(block) {
 };
 
 /**
+ * Formats the output of a fruit to its proper values
+ *
+ * @method outputFruitFormatter
+ * @param {Object} fruit
+ * @returns {Object}
+*/
+var outputFruitFormatter = function(fruit) {
+
+    // transform to number
+    fruit.size = utils.hexToNumber(fruit.size);
+    fruit.timestamp = utils.hexToNumber(fruit.timestamp);
+    if(fruit.number !== null)
+        fruit.number = utils.hexToNumber(fruit.number);
+
+    fruit.difficulty = outputBigNumberFormatter(fruit.difficulty);
+    fruit.fruitDifficulty = outputBigNumberFormatter(fruit.fruitDifficulty);
+
+    return fruit;
+};
+
+/**
  * Formats the output of a snail block to its proper values
  *
  * @method outputSnailFormatter
@@ -456,21 +477,22 @@ var outputSyncingFormatter = function(result) {
 };
 
 module.exports = {
-    inputDefaultBlockNumberFormatter: inputDefaultBlockNumberFormatter,
-    inputBlockNumberFormatter: inputBlockNumberFormatter,
-    inputCallFormatter: inputCallFormatter,
-    inputTransactionFormatter: inputTransactionFormatter,
-    inputAddressFormatter: inputAddressFormatter,
-    inputPostFormatter: inputPostFormatter,
-    inputLogFormatter: inputLogFormatter,
-    inputSignFormatter: inputSignFormatter,
-    outputBigNumberFormatter: outputBigNumberFormatter,
-    outputTransactionFormatter: outputTransactionFormatter,
-    outputTransactionReceiptFormatter: outputTransactionReceiptFormatter,
-    outputBlockFormatter: outputBlockFormatter,
-    outputSnailFormatter: outputSnailFormatter,
-    outputLogFormatter: outputLogFormatter,
-    outputPostFormatter: outputPostFormatter,
-    outputSyncingFormatter: outputSyncingFormatter
+    inputDefaultBlockNumberFormatter,
+    inputBlockNumberFormatter,
+    inputCallFormatter,
+    inputTransactionFormatter,
+    inputAddressFormatter,
+    inputPostFormatter,
+    inputLogFormatter,
+    inputSignFormatter,
+    outputBigNumberFormatter,
+    outputTransactionFormatter,
+    outputTransactionReceiptFormatter,
+    outputBlockFormatter,
+    outputFruitFormatter,
+    outputSnailFormatter,
+    outputLogFormatter,
+    outputPostFormatter,
+    outputSyncingFormatter
 };
 

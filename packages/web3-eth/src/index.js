@@ -236,6 +236,33 @@ var Eth = function Eth() {
             outputFormatter: utils.hexToNumber
         }),
         new Method({
+            name: 'getFruitNumber',
+            call: () => _this.currentProvider.genCall('fruitNumber'),
+            params: 0,
+            limit: 'etrue',
+            outputFormatter: utils.hexToNumber
+        }),
+        new Method({
+            name: 'getSnailNumber',
+            call: () => _this.currentProvider.genCall('snailBlockNumber'),
+            params: 0,
+            limit: 'etrue',
+            outputFormatter: utils.hexToNumber
+        }),
+        new Method({
+            name: 'getRewardSnailBlock',
+            call: () => _this.currentProvider.genCall('rewardSnailBlock'),
+            params: 0,
+            limit: 'etrue'
+        }),
+        new Method({
+            name: 'getCommitteeNumber',
+            call: () => _this.currentProvider.genCall('committeeNumber'),
+            params: 0,
+            limit: 'etrue',
+            outputFormatter: utils.hexToNumber
+        }),
+        new Method({
             name: 'getBalance',
             call: () => _this.currentProvider.genCall('getBalance'),
             params: 2,
@@ -260,6 +287,14 @@ var Eth = function Eth() {
             params: 2,
             inputFormatter: [formatter.inputBlockNumberFormatter, function (val) { return !!val; }],
             outputFormatter: formatter.outputBlockFormatter
+        }),
+        new Method({
+            name: 'getFruit',
+            call: args => _this.currentProvider.genCallWithJudge(args, 'getFruitByHash', 'getFruitByNumber'),
+            params: 2,
+            limit: 'etrue',
+            inputFormatter: [formatter.inputBlockNumberFormatter, function (val) { return !!val; }],
+            outputFormatter: formatter.outputFruitFormatter
         }),
         new Method({
             name: 'getSnail',
