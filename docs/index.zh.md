@@ -87,7 +87,7 @@ console.log(web3.currentProvider.type)
 
 ### 初始化
 
-和普通的web3一样，初始化web3对象需要提供相应的`Provider`以连接对等网络节点，包括`HttpProvider`、`WebsocketProvider`、`IpcProvider`。对于TrueChain网络可以使用官方提供的节点https://rpc.truedapp.net，该`HttpProvider`会始终保持在最新的网络上。
+和普通的web3一样，初始化web3对象需要提供相应的`Provider`以连接对等网络节点，包括`HttpProvider`、`WebsocketProvider`、`IpcProvider`。对于TrueChain网络可以使用官方提供的节点 https://rpc.truedapp.net ，该`HttpProvider`会始终保持在最新的网络上。
 
 区别于以太坊web3，在设置Provider时需要提供网络的类型，其中`eth`代表以太坊网络，`etrue`代表TrueChain网络，不同网络的请求名称不通，无法混用。下文中所有接口的展示均默认连接TrueChain网络。
 
@@ -96,7 +96,6 @@ console.log(web3.currentProvider.type)
 #### 输入
 
 1. `Obejct || string` - `provider`：有效的连接节点信息
-
 2. `string` - `type`：[可选]节点类型，可选的输入值为'eth'或者'etrue'，其余输入或者不输入都会认为时默认etrue网络
 
 #### 示例
@@ -120,10 +119,9 @@ console.log(web3.currentProvider.type)
 > 除了导入账户外，也可以先构造交易体，再由用户的私钥进行签名，签名后的交易直接使用`web3.eth.sendSignedTransaction`发送即可。这种方法中可以将第二部签名分离出来，交由例如离线钱包、硬件钱包完成，使得整个外层应用不会接触到用户的私钥，更加的安全。  
 > Web3本身也提供了相应的签名方法`web3.eth.signTransaction`。
 
-创建账户可以keystore导入或者私钥导入，相应的方法为：  
-`accounts.decrypt(keystoreJsonV3, password)`  
-`accounts.privateKeyToAccount(privateKey)`  
-以上两个方法均会返回账户对象，通过`accounts.wallet.add(account)`方法将其添加至钱包中即可导入该账户
+创建账户可以keystore导入或者私钥导入，相应的方法为：`accounts.decrypt(keystoreJsonV3, password)`、`accounts.privateKeyToAccount(privateKey)`。
+
+以上两个方法均会返回账户对象，通过`accounts.wallet.add(account)`方法将其添加至钱包中即可导入该账户。
 
 #### 示例
 
