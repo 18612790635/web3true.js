@@ -140,3 +140,56 @@ console.log(web3.eth.accounts.wallet)
 //  ...
 //}
 ```
+
+### 转账
+
+数字资产的转账是区块链网路中最基本的操作，通过构造一笔转账交易，至少包含发送方`from`、接收方`to`、转账金额`value`及其他信息。一般使用的接口为`web3.eth.sendTransaction`
+
+> 合约内的转账或者ERC20代币的转账和网络上本币（TrueChain主网里的True）的转账时完全不同的。前者的转账依靠调用合约内相应的方法实现。
+
+#### 输入
+
+1. `txObject` - `object`：构造好的要发送的交易信息：
+
+   * `from` - `string`：交易发起方的地址，以0x开头总长为42的十六进制字符串。需要与`accounts.wallet`中的某个账户地址对应，否则无法完成交易的签名。
+   * `to` - `string`： 交易接受方的地址，以0x开头总长为42的十六进制字符串。往任何合法地址的转账都是可行的，因此要注意避免由于输入错误将数字资产转移到错误的地址。
+   * `value` - `number|string|BN|BigNumber`：转账的数额。
+   > 大部分数字资产都有18位小数位，转账数额是以不可拆分的最小数额为单位的非负整数，因此如果需要转账1个True，`value`值应为`'1000000000000000000'`
+   * `gas` - `number`：设定执行交易可以使用的gas上限。普通的转账操作gas值固定为21000，因此设置21000即可。
+   * `gasPrice` - `number|string|BN|BigNumber`：每单位gas所支付的费用，理论上设定值越高交易越可能被先处理。在网络不繁忙的情况下设置最小值亦可。
+   * `nonce` - `number`：[可选]交易的严格递增编号，和交易发起方`from`地址有关。
+   > 每个账户对应的相同`nonce`编号的交易只会处理其中一个，编号n的交易一定恰好优先于编号n+1的交易。一般情况下`web3`会自动向网络请求已获得当前应该使用的`nonce`值。但是当连续发送交易时，由于交易执行需要一定时间，连续发放的交易可能会自动生成同样的`nonce`值，进而产生一系列问题，此时应该链式发送交易或手动构造`nonce`值。
+
+2. `callback` - `function`：[可选]回调函数，输入参数为交易执行后返回交易执行的结果或者交易失败时的报错。
+
+#### 返回值
+
+1. `PromiEvent`：异步处理对象，参考[以太坊web3官方文档](https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html#promievent)。
+
+#### 示例
+
+``` JavaScript
+web3.eth.sendTransaction({
+  from: '0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf',
+  to: '0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF',
+  value: '1000000000000000',
+  gas: 21000,
+  gasPrice: 1
+}).then(receipt => {
+  ...
+})
+
+web3.eth.sendTransaction({
+  from: '0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf',
+  to: '0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF',
+  value: '1000000000000000',
+  gas: 21000,
+  gasPrice: 1
+}).on('transactionHash', hash => {
+  ...
+}).on('receipt', receipt => {
+  ...
+}).on('confirmation', (confirmationNumber, receipt) => {
+  ...
+}).on('error', console.error);
+```
