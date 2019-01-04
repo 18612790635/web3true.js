@@ -634,7 +634,7 @@ Contract.prototype._on = function(){
                 }
             }
         },
-        type: 'eth',
+        type: 'empty',
         requestManager: this._requestManager
     });
     subscription.subscribe('logs', subOptions.params, subOptions.callback || function () {});

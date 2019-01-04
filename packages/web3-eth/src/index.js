@@ -423,7 +423,7 @@ var Eth = function Eth() {
         // subscriptions
         new Subscriptions({
             name: 'subscribe',
-            type: 'eth',
+            type: 'empty',
             subscriptions: {
                 'newBlockHeaders': {
                     // TODO rename on RPC side?

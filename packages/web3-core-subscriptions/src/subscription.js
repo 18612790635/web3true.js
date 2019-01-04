@@ -159,7 +159,7 @@ Subscription.prototype._toPayload = function (args) {
     }
 
     return {
-        method: this.options.type + '_subscribe',
+        method: this.options.requestManager.provider.genCall('subscribe'),
         params: params
     };
 };

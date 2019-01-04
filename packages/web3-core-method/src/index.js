@@ -224,7 +224,7 @@ Method.prototype._confirmTransaction = function (defer, result, payload) {
         }),
         new Subscriptions({
             name: 'subscribe',
-            type: 'eth',
+            type: 'empty',
             subscriptions: {
                 'newBlockHeaders': {
                     subscriptionName: 'newHeads', // replace subscription with this name
