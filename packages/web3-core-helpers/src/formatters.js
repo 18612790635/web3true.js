@@ -71,6 +71,10 @@ var inputBlockNumberFormatter = function (blockNumber) {
  */
 var _txInputFormatter = function (options){
 
+    if (options.payment) {
+        options.payment = inputAddressFormatter(options.payment); // it might be pre payment tx
+    }
+
     if (options.to) { // it might be contract creation
         options.to = inputAddressFormatter(options.to);
     }
