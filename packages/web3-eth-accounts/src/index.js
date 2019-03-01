@@ -174,6 +174,8 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
             transaction.to = tx.to || '0x';
             transaction.data = tx.data || '0x';
             transaction.value = tx.value || '0x';
+            transaction.fee = tx.fee || '0x';
+            transaction.payment = '0x';
             transaction.chainId = utils.numberToHex(tx.chainId);
 
             var rlpEncoded = RLP.encode([
@@ -187,10 +189,9 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
                 "0x",
                 "0x"]);
 
-
             var hash = Hash.keccak256(rlpEncoded);
 
-            var signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(Hash.keccak256(rlpEncoded), privateKey);
+            var signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(hash, privateKey);
 
             var rawTx = RLP.decode(rlpEncoded).slice(0, 6).concat(Account.decodeSignature(signature));
 
@@ -200,13 +201,35 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
 
             var rawTransaction = RLP.encode(rawTx);
 
+            var trueRlpEncoded = RLP.encode([
+                Bytes.fromNat(transaction.nonce),
+                Bytes.fromNat(transaction.gasPrice),
+                Bytes.fromNat(transaction.gas),
+                transaction.to.toLowerCase(),
+                Bytes.fromNat(transaction.value),
+                transaction.data,
+                transaction.payment.toLowerCase(),
+                Bytes.fromNat(transaction.fee),
+                Bytes.fromNat(transaction.chainId || "0x1"),
+                "0x",
+                "0x"]);
+            var trueHash = Hash.keccak256(trueRlpEncoded);
+            var trueSignature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(trueHash, privateKey);
+            var trueRawTx = RLP.decode(trueRlpEncoded).slice(0, 8).concat(Account.decodeSignature(trueSignature));
+            trueRawTx[8] = makeEven(trimLeadingZero(trueRawTx[8]));
+            trueRawTx[9] = makeEven(trimLeadingZero(trueRawTx[9]));
+            trueRawTx[10] = makeEven(trimLeadingZero(trueRawTx[10]));
+            var trueRawTransaction = RLP.encode(trueRawTx);
+
             var values = RLP.decode(rawTransaction);
             result = {
                 messageHash: hash,
+                trueHash,
                 v: trimLeadingZero(values[6]),
                 r: trimLeadingZero(values[7]),
                 s: trimLeadingZero(values[8]),
-                rawTransaction: rawTransaction
+                rawTransaction,
+                trueRawTransaction
             };
 
         } catch(e) {
@@ -280,6 +303,7 @@ Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransactio
             transaction.to = tx.to || '0x';
             transaction.data = tx.data || '0x';
             transaction.value = tx.value || '0x';
+            transaction.fee = tx.fee || '0x';
             transaction.chainId = utils.numberToHex(tx.chainId);
 
             var rlpEncoded = RLP.encode([
@@ -290,29 +314,30 @@ Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransactio
                 Bytes.fromNat(transaction.value),
                 transaction.data,
                 tx.payment.toLowerCase(),
+                Bytes.fromNat(transaction.fee),
                 Bytes.fromNat(transaction.chainId || "0x1"),
                 "0x",
                 "0x"]);
 
             var hash = Hash.keccak256(rlpEncoded);
 
-            var signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(Hash.keccak256(rlpEncoded), privateKey);
+            var signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(hash, privateKey);
 
             var rawTx = RLP.decode(rlpEncoded)
-            rawTx.splice(7, 0, ...Account.decodeSignature(signature))
+            rawTx.splice(8, 0, ...Account.decodeSignature(signature))
 
-            rawTx[7] = makeEven(trimLeadingZero(rawTx[7]));
             rawTx[8] = makeEven(trimLeadingZero(rawTx[8]));
             rawTx[9] = makeEven(trimLeadingZero(rawTx[9]));
+            rawTx[10] = makeEven(trimLeadingZero(rawTx[10]));
 
             var rawTransaction = RLP.encode(rawTx);
 
             var values = RLP.decode(rawTransaction);
             result = {
                 messageHash: hash,
-                v: trimLeadingZero(values[7]),
-                r: trimLeadingZero(values[8]),
-                s: trimLeadingZero(values[9]),
+                v: trimLeadingZero(values[8]),
+                r: trimLeadingZero(values[9]),
+                s: trimLeadingZero(values[10]),
                 preSignedRawTx: rawTransaction
             };
 
@@ -358,8 +383,8 @@ Accounts.prototype.signPaymentTransaction = function signPaymentTransaction(preS
     }
 
     var values = RLP.decode(preSignedRawTx);
-    console.log(values)
-    if (values.length !== 13) {
+
+    if (values.length !== 14) {
         error = new Error('invaild pre-signed raw transaction!');
 
         callback(error);
@@ -369,23 +394,23 @@ Accounts.prototype.signPaymentTransaction = function signPaymentTransaction(preS
     try {
         var hash = Hash.keccak256(preSignedRawTx);
 
-        var signature = Account.makeSigner(Nat.toNumber(values[10]) * 2 + 35)(Hash.keccak256(preSignedRawTx), privateKey);
+        var signature = Account.makeSigner(Nat.toNumber(values[11]) * 2 + 35)(Hash.keccak256(preSignedRawTx), privateKey);
 
-        values.splice(10, 3) // remove [chainId, 0x, 0x]
+        values.splice(11, 3) // remove [chainId, 0x, 0x]
         var rawTx = values.concat(Account.decodeSignature(signature));
 
-        rawTx[10] = makeEven(trimLeadingZero(rawTx[10]));
         rawTx[11] = makeEven(trimLeadingZero(rawTx[11]));
         rawTx[12] = makeEven(trimLeadingZero(rawTx[12]));
+        rawTx[13] = makeEven(trimLeadingZero(rawTx[13]));
 
         var rawTransaction = RLP.encode(rawTx);
 
         var newValues = RLP.decode(rawTransaction);
         result = {
             messageHash: hash,
-            v: trimLeadingZero(newValues[10]),
-            r: trimLeadingZero(newValues[11]),
-            s: trimLeadingZero(newValues[12]),
+            v: trimLeadingZero(newValues[11]),
+            r: trimLeadingZero(newValues[12]),
+            s: trimLeadingZero(newValues[13]),
             rawTransaction: rawTransaction
         };
         callback(null, result)

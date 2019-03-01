@@ -361,6 +361,13 @@ var Eth = function Eth() {
             inputFormatter: [null]
         }),
         new Method({
+            name: 'sendSignedTrueTransaction',
+            call: () => _this.currentProvider.genCall('sendTrueRawTransaction'),
+            limit: 'etrue',
+            params: 1,
+            inputFormatter: [null]
+        }),
+        new Method({
             name: 'signTransaction',
             call: () => _this.currentProvider.genCall('signTransaction'),
             params: 1,
