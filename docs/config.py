@@ -48,9 +48,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'web3.js'
-copyright = u'2016, Ethereum'
-author = u'Fabian Vogelsteller, Marek Kotewicz, Jeffrey Wilcke, Marian Oancea, Gav Wood'
+project = u'web3t.js'
+copyright = u'2019, TrueChain'
+author = u'Felix Cai'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -66,7 +66,7 @@ release = u'1.0.0'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'zh'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -219,7 +219,7 @@ html_static_path = ['_static']
 #   'da', 'de', 'en', 'es', 'fi', 'fr', 'hu', 'it', 'ja'
 #   'nl', 'no', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh'
 #
-# html_search_language = 'en'
+html_search_language = 'zh'
 
 # A dictionary with options for the search language support, empty by default.
 # 'ja' uses this config value.
@@ -233,7 +233,7 @@ html_static_path = ['_static']
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'web3jsdoc'
+htmlhelp_basename = 'web3tjsdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -259,8 +259,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'web3js.tex', u'web3.js Documentation',
-     u'Fabian Vogelsteller, Marek Kotewicz, Jeffrey Wilcke, Marian Oancea, Gav Wood', 'manual'),
+    (master_doc, 'web3tjs.tex', u'web3t.js Documentation',
+     u'Felix Cai', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -301,7 +301,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'web3js', u'web3.js Documentation',
+    (master_doc, 'web3tjs', u'web3t.js Documentation',
      [author], 1)
 ]
 
@@ -316,8 +316,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'web3js', u'web3.js Documentation',
-     author, 'web3js', 'One line description of project.',
+    (master_doc, 'web3tjs', u'web3t.js Documentation',
+     author, 'web3tjs', 'One line description of project.',
      'Miscellaneous'),
 ]
 
