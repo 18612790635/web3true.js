@@ -20,12 +20,12 @@
 
 或者从我们的git下载源码编译，或直接使用其中的 ``web3t.min.js`` 文件
 
-- github: :ref:`https://github.com/truechain/web3.js <https://github.com/truechain/web3.js>`_
+- github: `https://github.com/truechain/web3.js <https://github.com/truechain/web3.js>`_
 
 初始化Web3t对象
 =============
 
-和初始化web3对象一致，初始化web3t对象时需要设置节点链接的提供者（provider）。如同面向以太坊的浏览器插件MetaMask会在全局提供一个 ``ethereumProvider`` 对象一样，如果用户使用我们的浏览器插件 :ref:`GreenBelt <https://chrome.google.com/webstore/detail/greenbelt/cgmhechlnfbnfcnomkmcillkgnipocfh?hl=zh-CN>`_。你可以检查全局是否存在可用的 ``web3t.currentProvider``，否则你需要自己提供一个可用的远端或者本地节点。
+和初始化web3对象一致，初始化web3t对象时需要设置节点链接的提供者（provider）。如同面向以太坊的浏览器插件MetaMask会在全局提供一个 ``ethereumProvider`` 对象一样，如果用户使用我们的浏览器插件 `GreenBelt <https://chrome.google.com/webstore/detail/greenbelt/cgmhechlnfbnfcnomkmcillkgnipocfh?hl=zh-CN>`_。你可以检查全局是否存在可用的 ``web3t.currentProvider``，否则你需要自己提供一个可用的远端或者本地节点。
 与web3.js不同的是，初始化Web3t对象时还可以传入一个可选的字符串类型变量来指定链接网络的类型。目前的可选值为 ``'true'`` 或 ``'eth'`` 默认为 ``'true'``。部分属于TrueChain网络特有的方法会在选择网络类型为 ``'eth'`` 时被禁用。
 
 .. code-block:: javascript
