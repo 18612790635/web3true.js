@@ -5,37 +5,35 @@
 开始使用
 =====
 
-The web3.js library is a collection of modules which contain specific functionality for the ethereum ecosystem.
+关于web3.js库的结构，请查阅web3 1.0官方文档。web3t.js仅在web3-eth模块下新增了部分方法。
 
-- The ``web3-eth`` is for the ethereum blockchain and smart contracts
-- The ``web3-shh`` is for the whisper protocol to communicate p2p and broadcast
-- The ``web3-bzz`` is for the swarm protocol, the decentralized file storage
-- The ``web3-utils`` contains useful helper functions for Dapp developers.
+.. _adding-web3t:
 
-
-.. _adding-web3:
-
-Adding web3.js
-==============
+添加web3t.js
+=============
 
 .. index:: npm
-.. index:: bower
-.. index:: meteor
 
-First you need to get web3.js into your project. This can be done using the following methods:
+我们建议使用npm安装web3t.js到你的项目中。（目前还不可使用）
 
 - npm: ``npm install web3``
-- meteor: ``meteor add ethereum:web3``
-- pure js: link the ``dist/web3.min.js``
 
-After that you need to create a web3 instance and set a provider.
-Ethereum supported Browsers like Mist or MetaMask will have a ``ethereumProvider`` or ``web3.currentProvider`` available. For  web3.js, check ``Web3.givenProvider``.
-If this property is ``null`` you should connect to a remote/local node.
+或者从我们的git下载源码编译，或直接使用其中的 ``web3t.min.js`` 文件
+
+- github: :ref:`https://github.com/truechain/web3.js <https://github.com/truechain/web3.js>`_
+
+初始化Web3t对象
+=============
+
+和初始化web3对象一致，初始化web3t对象时需要设置节点链接的提供者（provider）。如同面向以太坊的浏览器插件MetaMask会在全局提供一个 ``ethereumProvider`` 对象一样，如果用户使用我们的浏览器插件 :ref:`GreenBelt <https://chrome.google.com/webstore/detail/greenbelt/cgmhechlnfbnfcnomkmcillkgnipocfh?hl=zh-CN>`_。你可以检查全局是否存在可用的 ``web3t.currentProvider``，否则你需要自己提供一个可用的远端或者本地节点。
+与web3.js不同的是，初始化Web3t对象时还可以传入一个可选的字符串类型变量来指定链接网络的类型。目前的可选值为 ``'true'`` 或 ``'eth'`` 默认为 ``'true'``。部分属于TrueChain网络特有的方法会在选择网络类型为 ``'eth'`` 时被禁用。
 
 .. code-block:: javascript
 
-    // in node.js use: const Web3 = require('web3');
+  const Web3t = require('web3t');
 
-    const web3 = new Web3(Web3.givenProvider || "ws://localhost:8546");
+  const web3t = new Web3t(web3t.currentProvider || "http://localhost:8545", 'true');
 
-That's it! now you can use the ``web3`` object.
+现在你就已经创建了一个web3t对象.
+
+.. note:: 为了和很多会在全局注册web3对象的以太坊工具区分，我们选择并且强烈建议开发者使用后缀 ``t`` 来区分面向两个不同网络的工具。虽然web3t本身是完全兼容以太坊网络的接口的，这意味着当你需要开发一个同时在两个链上交互的应用时，你可以仅引入一个web3t.js。另一方面，为了开发者能够较快的迭代项目至TrueChain网络，我们并没有修改web3t下各模块的名称，以便于代码可以不用做过多改动直接迁移。（我们仍然使用例如 ``web3t.eth.getBlock()`` 而不是 ``web3t.etrue.getBlock()``）
