@@ -1,8 +1,8 @@
 {
-  "name": "web3t",
+  "name": "web3true",
   "private": false,
   "namespace": "truechain",
-  "version": "1.0.0-beta.36",
+  "version": "1.0.0",
   "description": "Truechain JavaScript API wrapper repository",
   "license": "LGPL-3.0",
   "main": "./packages/web3/src/index.js",
