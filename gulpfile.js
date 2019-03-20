@@ -22,7 +22,7 @@ var exec = require('child_process').exec;
 var DEST = path.join(__dirname, 'dist/');
 
 var packages = [{
-    fileName: 'web3',
+    fileName: 'web3t',
     expose: 'Web3',
     src: './packages/web3/src/index.js',
     ignore: ['xmlhttprequest', 'websocket']

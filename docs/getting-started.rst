@@ -16,13 +16,13 @@
 
 .. index:: npm
 
-我们建议使用npm安装web3t.js到你的项目中。（目前还不可使用）
+我们建议使用npm安装web3t.js到你的项目中。注意：在npm上包的名称为 `web3true <https://www.npmjs.com/package/web3true>`_。
 
-- npm: ``npm install web3t``
+- npm: ``npm install web3true``
 
 或者从我们的git下载源码编译，或直接使用其中的 ``web3t.min.js`` 文件
 
-- github: `https://github.com/truechain/web3t.js <https://github.com/truechain/web3t.js>`_
+- github: `https://github.com/truechain/web3true.js <https://github.com/truechain/web3true.js>`_
 
 .. _init-web3t:
 
@@ -34,7 +34,7 @@
 
 .. code-block:: javascript
 
-  const Web3t = require('web3t');
+  const Web3t = require('web3true');
 
   const web3t = new Web3t(web3t.currentProvider || "http://localhost:8545", 'true');
 
