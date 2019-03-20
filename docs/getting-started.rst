@@ -22,7 +22,7 @@
 
 或者从我们的git下载源码编译，或直接使用其中的 ``web3t.min.js`` 文件
 
-- github: `https://github.com/truechain/web3.js <https://github.com/truechain/web3.js>`_
+- github: `https://github.com/truechain/web3t.js <https://github.com/truechain/web3t.js>`_
 
 .. _init-web3t:
 
