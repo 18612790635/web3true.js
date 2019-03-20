@@ -16,7 +16,7 @@
 
 我们建议使用npm安装web3t.js到你的项目中。（目前还不可使用）
 
-- npm: ``npm install web3``
+- npm: ``npm install web3t``
 
 或者从我们的git下载源码编译，或直接使用其中的 ``web3t.min.js`` 文件
 
