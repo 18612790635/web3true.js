@@ -40,7 +40,7 @@ gas代付交易相比与原始的以太坊交易，在交易的结构、签名�
 交易签名
 ============
 
-web3t.js拓展了 ``web3t.eth.accounts`` 对象，更新了 ``signTransaction`` 方法，并且新增了 ``signPrePaymentTransaction`` 和 ``signPaymentTransaction`` 方法。
+web3t.js拓展了 ``web3t.eth.accounts`` 对象，更新了 ``signTransaction()`` 方法，并且新增了 ``signPrePaymentTransaction()`` 和 ``signPaymentTransaction()`` 方法。
 这些方法同样可以直接在 ``Account`` 对象中访问。
 
 .. _signtransaction:
