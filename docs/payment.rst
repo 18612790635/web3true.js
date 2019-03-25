@@ -35,7 +35,7 @@ gas代付交易相比与原始的以太坊交易，在交易的结构、签名�
 
 .. note:: 在逻辑上，节点是可以通过签名来获取 ``payment`` 账户地址的。之所以要显式在交易结构内声明，是为了防止代付方或他人直接拒绝代付签名并将交易直接发送到节点上，而导致交易的发起方预料之外的被扣除了手续费。
 
-.. note:: 由于新增的代付交易需要两次签名，所以没有提供例如 :ref:`web3t.eth.sendTrueTransaction() <sendtruetransaction>` 的直接签发交易的方法。使用者需要先调用相应方法对交易进行签名，再调用 :ref:`web3t.eth.sendSignedTrueTransaction() <sendsignedtruetransaction>` 方法发送至节点。
+.. note:: 由于新增的代付交易需要两次签名，所以没有提供例如 ``web3t.eth.sendTrueTransaction()`` 的直接签发交易的方法。使用者需要先调用相应方法对交易进行签名，再调用 ``web3t.eth.sendSignedTrueTransaction()`` 方法发送至节点。
 
 ------------------------------------------------------------------------------
 
@@ -49,14 +49,19 @@ web3t.js拓展了 ``web3t.eth.accounts`` 对象，更新了 ``signTransaction()`
 
 .. _signtransaction:
 
-----------
 signTransaction
 ----------
+
+参数
+^^^^
 
 基于web3.js的 `相应方法 <https://web3js.readthedocs.io/en/1.0/web3-eth-accounts.html#signtransaction>`_，在输入参数中新增了可选参数：
 
   - ``fee`` - ``String``: 交易额外向矿工支付的费用。以wei为单位，默认为0。
   - ``payment`` - ``String``: 交易的代付账号，默认为空。
+
+返回
+^^^^
 
 签名成功后的回调函数或Promise传递的对象中增加了新的字段：
 
@@ -65,7 +70,8 @@ signTransaction
 
 另外方法本身仍然会直接忽略 ``fee`` 和 ``payment`` 参数进行原始以太坊交易的签名，并生成兼容的签名交易信息。
 
-例如：
+示例
+^^^^
 
 .. code-block:: javascript
 
@@ -90,17 +96,22 @@ signTransaction
 
 .. _signprepaymenttransaction:
 
-----------
 signPrePaymentTransaction
 ----------
 
-如同方法名字面所描述，该方法对一个预代付交易进行签名。用该方法生成的预签名交易**不能用于发送**，而仅用于下一步，由交易的真正扣费账户进一步签名生成 ``TrueRawTransaction`` 并发送。
+如同方法名字面所描述，该方法对一个预代付交易进行签名。用该方法生成的预签名交易 **不能用于发送**，而仅用于下一步，由交易的真正扣费账户进一步签名生成 ``TrueRawTransaction`` 并发送。
+
+参数
+^^^^
 
 该方法接受的参数和 ``signTransaction`` 完全一致：
 
   - ``tx`` - ``Object``: 拓展后的TrueTx交易体。
   - ``privateKey`` - ``String``: 用来签名的（交易发起方）私钥。
   - ``callback`` - ``Function``: （可选）回调函数，返回一个错误对象作为第一个参数，签名结果作为第二个参数。
+
+返回
+^^^^
 
 该方法返回一个 ``Promise`` 对象，在签名成功时传递以下信息：
 
@@ -110,7 +121,8 @@ signPrePaymentTransaction
   - ``v`` - ``String``: 签名校验位 + ChainId * 2 + 35
   - ``preSignedRawTx`` - ``String``: 预代付签名的结果，是包含交易和签名，并在末尾补充了 ``chainId`` 等信息后的RLP编码。不能直接发送至节点，仅用于在下一步由 ``payment`` 账户进行签名使用。
 
-例如：
+示例
+^^^^
 
 .. code-block:: javascript
 
@@ -141,7 +153,6 @@ signPrePaymentTransaction
 
 .. _sendsignedtruetransaction:
 
-----------
 sendSignedTrueTransaction
 ----------
 
