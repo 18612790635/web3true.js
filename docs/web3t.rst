@@ -16,4 +16,5 @@ Web3t对象的属性和Web3完全一致，如果对这个模块不了解，可�
 除了和以太坊兼容的部分，Web3t针对TrueChain网络的特性，拓展了相应的查询、调用接口，你可以通过下面的TrueChain网络特性列表找到对应的API：
 
 :ref:`快/慢链查询 <blocks>`
+
 :ref:`Gas代付 <payment>`
