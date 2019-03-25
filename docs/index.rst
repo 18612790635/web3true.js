@@ -26,4 +26,5 @@ web3t.js是web3.js的超集，在web3.js的基础上，增加了更多针对True
   :caption: 新增API参考
 
   web3t
+  blocks
   payment

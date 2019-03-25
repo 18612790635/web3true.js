@@ -53,6 +53,8 @@ var genCall = function(call) {
         return 'eth_' + call;
     case 'etrue':
         return 'etrue_' + call;
+    case 'true':
+        return 'etrue_' + call;
     default:
         return 'eth_' + call;
     }
@@ -110,6 +112,9 @@ RequestManager.prototype.setProvider = function (p, net, type) {
         switch (type) {
         case 'eth':
             p.type = 'eth';
+            break;
+        case 'true':
+            p.type = 'true';
             break;
         case 'etrue':
         default:

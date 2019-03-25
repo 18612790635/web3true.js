@@ -1,6 +1,8 @@
 
 .. include:: include_announcement.rst
 
+.. _payment:
+
 ==========
 Gas代付交易
 ==========
@@ -55,7 +57,7 @@ signTransaction
 参数
 ^^^^
 
-基于web3.js的 `相应方法 <https://web3js.readthedocs.io/en/1.0/web3-eth-accounts.html#signtransaction>`_，在输入参数中新增了可选参数：
+基于web3.js的 `同名方法 <https://web3js.readthedocs.io/en/1.0/web3-eth-accounts.html#signtransaction>`_，在输入参数中新增了可选参数：
 
   - ``fee`` - ``String``: 交易额外向矿工支付的费用。以wei为单位，默认为0。
   - ``payment`` - ``String``: 交易的代付账号，默认为空。
@@ -199,4 +201,4 @@ signPaymentTransaction
 sendSignedTrueTransaction
 -------------------------
 
-调用该方法来向节点发送一个签名过后的True交易
+使用该方法发送签名好的TrueTransaction，调用的方法和返回的数据格式与web3.js的 `sendSignedTransaction <https://web3js.readthedocs.io/en/1.0/web3-eth.html#sendsignedtransaction>`_一致，两者的区别为 ``sendSignedTransaction`` 方法仅能发送原始的以太坊标准的交易，任何带有 ``fee`` 或 ``payment`` 字段的交易必须使用 ``sendSignedTrueTransaction`` 发送。

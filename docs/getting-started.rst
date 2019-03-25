@@ -38,6 +38,9 @@
 
   const web3t = new Web3t(web3t.currentProvider || "http://localhost:8545", 'true');
 
+  console.log(web3t.currentProvider.type);
+  > 'true'
+
 现在你就已经创建了一个web3t对象.
 
 .. note:: 为了和很多会在全局注册web3对象的以太坊工具区分，我们选择并且强烈建议开发者使用后缀 ``t`` 来区分面向两个不同网络的工具。虽然web3t本身是完全兼容以太坊网络的接口的，这意味着当你需要开发一个同时在两个链上交互的应用时，你可以仅引入一个web3t.js。另一方面，为了开发者能够较快的迭代项目至TrueChain网络，我们并没有修改web3t下各模块的名称，以便于代码可以不用做过多改动直接迁移。（我们仍然使用例如 ``web3t.eth.getBlock()`` 而不是 ``web3t.etrue.getBlock()``）
