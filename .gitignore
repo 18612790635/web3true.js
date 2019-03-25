@@ -15,4 +15,3 @@ bower_components
 .vscode/
 /dist/*.js
 !/dist/web3t.min.js
-*/**/node_modules
