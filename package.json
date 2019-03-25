@@ -2,7 +2,7 @@
   "name": "web3true",
   "private": false,
   "namespace": "truechain",
-  "version": "1.0.2",
+  "version": "1.0.0-beta.36",
   "description": "Truechain JavaScript API wrapper repository",
   "license": "LGPL-3.0",
   "main": "./packages/web3/src/index.js",
@@ -11,6 +11,7 @@
     "test": "./test"
   },
   "scripts": {
+    "clear": "find . -name 'node_modules' -type d -exec rm -rf \"{}\" \\;",
     "postinstall": "lerna bootstrap",
     "build": "gulp",
     "build-all": "gulp all",
