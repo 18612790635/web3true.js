@@ -23,7 +23,7 @@ var DEST = path.join(__dirname, 'dist/');
 
 var packages = [{
     fileName: 'web3t',
-    expose: 'Web3',
+    expose: 'Web3t',
     src: './packages/web3/src/index.js',
     ignore: ['xmlhttprequest', 'websocket']
 }, {

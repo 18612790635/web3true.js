@@ -36,7 +36,7 @@ var Shh = require('web3-shh');
 var Bzz = require('web3-bzz');
 var utils = require('web3-utils');
 
-var Web3t = function Web3t() {
+var Web3 = function Web3() {
     var _this = this;
 
     // sets _requestmanager etc
@@ -62,9 +62,9 @@ var Web3t = function Web3t() {
     };
 };
 
-Web3t.version = version;
-Web3t.utils = utils;
-Web3t.modules = {
+Web3.version = version;
+Web3.utils = utils;
+Web3.modules = {
     Eth: Eth,
     Net: Net,
     Personal: Personal,
@@ -72,7 +72,7 @@ Web3t.modules = {
     Bzz: Bzz
 };
 
-core.addProviders(Web3t);
+core.addProviders(Web3);
 
-module.exports = Web3t;
+module.exports = Web3;
 
