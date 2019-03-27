@@ -15,7 +15,6 @@
   ],
   "scripts": {
     "clear": "find . -name 'node_modules' -type d -exec rm -rf \"{}\" \\;",
-    "postinstall": "lerna bootstrap",
     "build": "gulp",
     "build-all": "gulp all",
     "release": "lerna bootstrap; lerna publish; gulp version; gulp; gulp publishTag; git push --tags",
