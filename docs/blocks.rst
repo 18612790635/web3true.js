@@ -25,14 +25,16 @@ getBlock
 
 查询快链块信息，接收参数和 `web3的方法一致 <https://web3js.readthedocs.io/en/1.0/web3-eth.html#getblock>`_，在返回值上和以太坊区块结构有所差异。
 
-新增字段：
+新增字段
+^^^^^^^
 
   - ``CommitteeHash`` 32 Bytes - ``String``: 产生该块的委员会的Hash
   - ``signs`` - ``Array``: 产生该快的委员会签名信息
   - ``SnailHash`` 32 Bytes - ``String``: 在当前块中被奖励的慢链Hash，在没有奖励的时候为 ``Address(0)``
   - ``SnailNumber`` - ``Number``: 在当前块中被奖励的慢链高度，在没有奖励的时候为0
 
-移除字段（及其移除理由）：
+移除字段（及其移除理由）
+^^^^^^^^^^^^^^^^^^^
 
   - ``miner``: TrueChain网络的块链块不是由矿工产生的，而是委员会生成的
   - ``difficulty``: 块链块上不存在难度值概念
