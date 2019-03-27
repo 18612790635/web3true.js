@@ -4,7 +4,7 @@ This is the TrueChain JavaScript API developed based on the Ethereum version.
 
 ## Installation
 
-> NOTICE: You must install lerna via `npm install -g lerna` before install web3true package. This is a bug that is currently being fixed. (2019-3-27)
+<!-- > NOTICE: You must install lerna via `npm install -g lerna` before install web3true package. This is a bug that is currently being fixed. (2019-3-27) <Already fixed> -->
 
 install
 

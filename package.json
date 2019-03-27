@@ -10,6 +10,9 @@
     "doc": "./doc",
     "test": "./test"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clear": "find . -name 'node_modules' -type d -exec rm -rf \"{}\" \\;",
     "postinstall": "lerna bootstrap",
