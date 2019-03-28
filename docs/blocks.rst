@@ -40,3 +40,17 @@ getBlock
   - ``difficulty``: 块链块上不存在难度值概念
   - ``totalDifficulty``: 块链块上不存在难度值概念
   - ``uncles``: 块链块不会产生分叉
+
+getBlockNumber
+--------------
+
+获取当前快链高度，参数和返回值略。
+
+示例
+^^^^
+
+.. code-block:: javascript
+
+  web3t.eth.getBlockNumber()
+  .then(console.log);
+  > 12332
