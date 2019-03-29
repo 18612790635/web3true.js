@@ -1,7 +1,7 @@
 /* jshint ignore:start */
 Package.describe({
   name: 'truechain:web3t',
-  version: '1.0.6',
+  version: '1.0.8',
   summary: 'Truechain JavaScript API wrapper repository',
   git: 'https://github.com/truechain/web3true.js',
   // By default, Meteor will default to using README.md for documentation.
