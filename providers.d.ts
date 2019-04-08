@@ -59,8 +59,9 @@ export class IpcProvider extends Provider {
 export default interface Providers {
     WebsocketProvider: new (
         host: string,
+        type?: string,
         timeout?: number
     ) => WebsocketProvider;
-    HttpProvider: new (host: string, timeout?: number) => HttpProvider;
-    IpcProvider: new (path: string, net: any) => IpcProvider;
+    HttpProvider: new (host: string, type?: string, timeout?: number) => HttpProvider;
+    IpcProvider: new (path: string, net: any, type?: string) => IpcProvider;
 }

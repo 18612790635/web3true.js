@@ -10,6 +10,7 @@ import {
     BlockHeader,
     CompileResult,
     Block,
+    SnailBlock,
     Transaction,
     Tx,
     BlockType,
@@ -99,7 +100,13 @@ export default interface Eth {
         returnTransactionObjects?: boolean,
         cb?: Callback<Block>
     ): Promise<Block>;
+    getSnail(
+        number: BlockType,
+        returnFruitObjects?: boolean,
+        cb?: Callback<Block>
+    ): Promise<SnailBlock>;
     getBlockNumber(callback?: Callback<number>): Promise<number>;
+    getSnailNumber(callback?: Callback<number>): Promise<number>;
     getBlockTransactionCount(
         number: BlockType | string,
         cb?: Callback<number>

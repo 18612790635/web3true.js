@@ -40,7 +40,7 @@ declare class Web3 {
         Bzz: new (provider: Provider) => Bzz;
     };
     static utils: Utils;
-    constructor(provider?: Provider | string);
+    constructor(provider?: Provider | string, type?: string);
     version: string;
     BatchRequest: new () => BatchRequest;
     extend(methods: any): any; // TODO

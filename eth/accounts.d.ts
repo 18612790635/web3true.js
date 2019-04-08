@@ -8,6 +8,14 @@ export interface Account {
 		tx: Tx,
 		cb?: (err: Error, result: TxSignature) => void
 	): Promise<TxSignature>;
+	signPrePaymentTransaction(
+		tx: Tx,
+		cb?: (err: Error, result: PrePaymentTxSignature) => void
+	): Promise<PrePaymentTxSignature>;
+	signPaymentTransaction(
+		preSignedRawTx: string,
+		cb?: (err: Error, result: PaymentTxSignature) => void
+	): Promise<PaymentTxSignature>;
 	encrypt(password: string, options?: any): PrivateKey;
 }
 
@@ -22,6 +30,14 @@ export interface MessageSignature extends Signature {
 	signature: string;
 }
 export interface TxSignature extends Signature {
+	trueHash: string;
+	rawTransaction: string;
+	trueRawTransaction: string;
+}
+export interface PrePaymentTxSignature extends Signature {
+	preSignedRawTx: string
+}
+export interface PaymentTxSignature extends Signature {
 	rawTransaction: string;
 }
 
@@ -56,6 +72,16 @@ export default interface Accounts {
 		privateKey: string,
 		cb?: (err: Error, result: TxSignature) => void
 	): Promise<TxSignature>;
+	signPrePaymentTransaction(
+		tx: Tx,
+		privateKey: string,
+		cb?: (err: Error, result: PrePaymentTxSignature) => void
+	): Promise<PrePaymentTxSignature>;
+	signPaymentTransaction(
+		preSignedRawTx: string,
+		privateKey: string,
+		cb?: (err: Error, result: PaymentTxSignature) => void
+	): Promise<PaymentTxSignature>;
 	recoverTransaction(signature: string): string;
 	sign(
 		data: string,

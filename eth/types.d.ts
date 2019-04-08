@@ -10,6 +10,8 @@ export interface Tx {
 	value?: string | number;
 	gas?: string | number;
 	gasPrice?: string | number;
+	fee?: string | number;
+	payment?: string;
 }
 
 export class BatchRequest {
@@ -34,7 +36,6 @@ export interface BlockHeader {
 	transactionRoot: string;
 	stateRoot: string;
 	receiptRoot: string;
-	miner: string;
 	extraData: string;
 	gasLimit: number;
 	gasUsed: number;
@@ -43,6 +44,14 @@ export interface BlockHeader {
 export interface Block extends BlockHeader {
 	transactions: Transaction[];
 	size: number;
+	signs: string[];
+	CommitteeHash: string;
+	SnailHash: string;
+	SnailNumber: number;
+}
+export interface SnailBlock extends BlockHeader {
+	size: number;
+	miner: string;
 	difficulty: number;
 	totalDifficulty: number;
 	uncles: string[];
