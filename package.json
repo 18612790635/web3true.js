@@ -5,18 +5,16 @@
   "version": "1.0.11",
   "description": "Truechain JavaScript API wrapper repository",
   "license": "LGPL-3.0",
-  "main": "./packages/web3/src/index.js",
-  "types": "./types/index.d.ts",
+  "main": "./packages/web3/index.js",
+  "types": "./index.d.ts",
   "directories": {
     "doc": "./doc",
     "test": "./test"
   },
   "scripts": {
     "clear": "find . -name 'node_modules' -type d -exec rm -rf \"{}\" \\;",
-    "postinstall": "lerna bootstrap",
     "build": "gulp",
     "build-all": "gulp all",
-    "release": "lerna bootstrap; lerna publish; gulp version; gulp; gulp publishTag; git push --tags",
     "watch": "gulp watch",
     "docs": "cd docs; make html;",
     "lint": "jshint *.js packages",
@@ -45,6 +43,7 @@
     }
   ],
   "devDependencies": {
+    "@types/bn.js": "^4.11.1",
     "@types/bignumber.js": "^4.0.2",
     "@types/underscore": "^1.8.0",
     "babel-preset-env": "^1.6.0",
@@ -75,7 +74,28 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@types/bn.js": "^4.11.1",
-    "lerna": "^2.5.1"
+    "@types/eventemitter3": "^2.0.2",
+    "@types/got": "^9.4.4",
+    "@types/oboe": "^2.0.28",
+    "@types/utf8": "^2.1.6",
+    "@types/uuid": "^3.4.4",
+    "@types/websocket": "0.0.40",
+    "any-promise": "1.3.0",
+    "crypto-browserify": "3.12.0",
+    "eth-ens-namehash": "2.0.8",
+    "eth-lib": "0.2.7",
+    "ethers": "4.0.0-beta.1",
+    "ethjs-unit": "0.1.6",
+    "eventemitter3": "1.1.1",
+    "got": "7.1.0",
+    "number-to-bn": "1.7.0",
+    "oboe": "2.1.3",
+    "randomhex": "0.1.5",
+    "scrypt.js": "0.2.0",
+    "swarm-js": "0.1.37",
+    "utf8": "2.1.1",
+    "uuid": "2.0.1",
+    "websocket": "git://github.com/frozeman/WebSocket-Node.git#browserifyCompatible",
+    "xhr2": "0.1.4"
   }
 }
