@@ -179,6 +179,10 @@ export default interface Eth {
         data: string,
         cb?: Callback<string>
     ): PromiEvent<TransactionReceipt>;
+    sendSignedTrueTransaction(
+        data: string,
+        cb?: Callback<string>
+    ): PromiEvent<TransactionReceipt>;
     sendTransaction(
         tx: Tx,
         cb?: Callback<string>
