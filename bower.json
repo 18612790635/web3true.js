@@ -1,7 +1,7 @@
 {
   "namespace": "truechain",
   "name": "web3t",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Truechain JavaScript API",
   "license": "LGPL-3.0",
   "main": [
