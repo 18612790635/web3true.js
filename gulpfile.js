@@ -2,7 +2,7 @@
 
 'use strict';
 
-var lernaJSON = require('./lerna.json');
+var packageJSON = require('./package.json');
 var path = require('path');
 
 var del = require('del');
@@ -122,11 +122,11 @@ var ugliyOptions = {
 };
 
 gulp.task('version', function () {
-    if (!lernaJSON.version) {
-        throw new Error("version property is missing from lerna.json");
+    if (!packageJSON.version) {
+        throw new Error("version property is missing from package.json");
     }
 
-    var version = lernaJSON.version;
+    var version = packageJSON.version;
     var jsonPattern = /"version": "[.0-9\-a-z]*"/;
     var jsPattern = /version: '[.0-9\-a-z]*'/;
     var glob = [
@@ -196,7 +196,7 @@ packages.forEach(function (pckg, i) {
 
 
 gulp.task('publishTag', function () {
-    exec("git commit -am \"add tag v"+ lernaJSON.version +"\"; git tag v"+ lernaJSON.version +"; git push origin v"+ lernaJSON.version +";");
+    exec("git commit -am \"add tag v"+ packageJSON.version +"\"; git tag v"+ packageJSON.version +"; git push origin v"+ packageJSON.version +";");
 });
 
 gulp.task('watch', function () {
