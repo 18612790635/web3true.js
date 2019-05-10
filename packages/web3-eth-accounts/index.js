@@ -37,6 +37,8 @@ var uuid = require('uuid');
 var utils = require('../web3-utils');
 var helpers = require('../web3-core-helpers');
 
+require('babel-polyfill')
+
 var isNot = function(value) {
     return (_.isUndefined(value) || _.isNull(value));
 };
@@ -54,6 +56,28 @@ var makeEven = function (hex) {
     }
     return hex;
 };
+
+const greenbeltEthSign = async (proxy, hash, chainId) => {
+    return new Promise((reslove, reject) => {
+        proxy.sendAsync({
+            method: 'eth_sign',
+            params: [
+                proxy.selectedAddress,
+                hash
+            ]
+        }, (error, res) => {
+            if (error || res.error) {
+                reject(res.error.message)
+            } else {
+                let signature = res.result
+                const basicV = signature.substr(130, 2)
+                const v = Nat.toNumber(chainId || '0x1') * 2 + 8 + Number('0x' + basicV)
+                signature = signature.substr(0, 130) + v.toString(16)
+                reslove(signature)
+            }
+        })
+    })
+}
 
 
 var Accounts = function Accounts() {
@@ -135,7 +159,7 @@ Accounts.prototype.privateKeyToAccount = function privateKeyToAccount(privateKey
     return this._addAccountFunctions(Account.fromPrivate(privateKey));
 };
 
-Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, callback) {
+Accounts.prototype.signTransaction = async function signTransaction(tx, privateKey, callback) {
     var _this = this,
         error = false,
         result;
@@ -149,8 +173,7 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
         return Promise.reject(error);
     }
 
-    function signed (tx) {
-
+    async function signed (tx) {
         if (!tx.gas && !tx.gasLimit) {
             error = new Error('"gas" is missing');
         }
@@ -191,7 +214,13 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
 
             var hash = Hash.keccak256(rlpEncoded);
 
-            var signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(hash, privateKey);
+            let signature = ''
+            if (privateKey.isMetaMask) {
+                const greenbelt = privateKey
+                signature = await greenbeltEthSign(greenbelt, hash, transaction.chainId)
+            } else {
+                signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(hash, privateKey)
+            }
 
             var rawTx = RLP.decode(rlpEncoded).slice(0, 6).concat(Account.decodeSignature(signature));
 
@@ -201,25 +230,28 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
 
             var rawTransaction = RLP.encode(rawTx);
 
-            var trueRlpEncoded = RLP.encode([
-                Bytes.fromNat(transaction.nonce),
-                Bytes.fromNat(transaction.gasPrice),
-                Bytes.fromNat(transaction.gas),
-                transaction.to.toLowerCase(),
-                Bytes.fromNat(transaction.value),
-                transaction.data,
-                transaction.payment.toLowerCase(),
-                Bytes.fromNat(transaction.fee),
-                Bytes.fromNat(transaction.chainId || "0x1"),
-                "0x",
-                "0x"]);
-            var trueHash = Hash.keccak256(trueRlpEncoded);
-            var trueSignature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(trueHash, privateKey);
-            var trueRawTx = RLP.decode(trueRlpEncoded).slice(0, 8).concat(Account.decodeSignature(trueSignature));
-            trueRawTx[8] = makeEven(trimLeadingZero(trueRawTx[8]));
-            trueRawTx[9] = makeEven(trimLeadingZero(trueRawTx[9]));
-            trueRawTx[10] = makeEven(trimLeadingZero(trueRawTx[10]));
-            var trueRawTransaction = RLP.encode(trueRawTx);
+            var trueRawTransaction = 'can not generate trueRawTransaction while using GreenBelt'
+            if (!privateKey.isMetaMask) {
+                var trueRlpEncoded = RLP.encode([
+                    Bytes.fromNat(transaction.nonce),
+                    Bytes.fromNat(transaction.gasPrice),
+                    Bytes.fromNat(transaction.gas),
+                    transaction.to.toLowerCase(),
+                    Bytes.fromNat(transaction.value),
+                    transaction.data,
+                    transaction.payment.toLowerCase(),
+                    Bytes.fromNat(transaction.fee),
+                    Bytes.fromNat(transaction.chainId || "0x1"),
+                    "0x",
+                    "0x"]);
+                var trueHash = Hash.keccak256(trueRlpEncoded);
+                var trueSignature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(trueHash, privateKey);
+                var trueRawTx = RLP.decode(trueRlpEncoded).slice(0, 8).concat(Account.decodeSignature(trueSignature));
+                trueRawTx[8] = makeEven(trimLeadingZero(trueRawTx[8]));
+                trueRawTx[9] = makeEven(trimLeadingZero(trueRawTx[9]));
+                trueRawTx[10] = makeEven(trimLeadingZero(trueRawTx[10]));
+                var trueRawTransaction = RLP.encode(trueRawTx);
+            }
 
             var values = RLP.decode(rawTransaction);
             result = {
@@ -243,9 +275,8 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
 
     // Resolve immediately if nonce, chainId and price are provided
     if (tx.nonce !== undefined && tx.chainId !== undefined && tx.gasPrice !== undefined) {
-        return Promise.resolve(signed(tx));
+        return signed(tx)
     }
-
 
     // Otherwise, get the missing info from the Ethereum Node
     return Promise.all([
@@ -260,7 +291,7 @@ Accounts.prototype.signTransaction = function signTransaction(tx, privateKey, ca
     });
 };
 
-Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransaction(tx, privateKey, callback) {
+Accounts.prototype.signPrePaymentTransaction = async function signPrePaymentTransaction(tx, privateKey, callback) {
     var _this = this,
         error = false,
         result;
@@ -278,7 +309,7 @@ Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransactio
         error = new Error('"payment" is missing');
     }
 
-    function signed (tx) {
+    async function signed (tx) {
 
         if (!tx.gas && !tx.gasLimit) {
             error = new Error('"gas" is missing');
@@ -321,7 +352,13 @@ Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransactio
 
             var hash = Hash.keccak256(rlpEncoded);
 
-            var signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(hash, privateKey);
+            let signature = ''
+            if (privateKey.isMetaMask) {
+                const greenbelt = privateKey
+                signature = await greenbeltEthSign(greenbelt, hash, transaction.chainId)
+            } else {
+                signature = Account.makeSigner(Nat.toNumber(transaction.chainId || "0x1") * 2 + 35)(hash, privateKey)
+            }
 
             var rawTx = RLP.decode(rlpEncoded)
             rawTx.splice(8, 0, ...Account.decodeSignature(signature))
@@ -352,9 +389,8 @@ Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransactio
 
     // Resolve immediately if nonce, chainId and price are provided
     if (tx.nonce !== undefined && tx.chainId !== undefined && tx.gasPrice !== undefined) {
-        return Promise.resolve(signed(tx));
+        return signed(tx)
     }
-
 
     // Otherwise, get the missing info from the Ethereum Node
     return Promise.all([
@@ -369,7 +405,7 @@ Accounts.prototype.signPrePaymentTransaction = function signPrePaymentTransactio
     });
 };
 
-Accounts.prototype.signPaymentTransaction = function signPaymentTransaction(preSignedRawTx, privateKey, callback) {
+Accounts.prototype.signPaymentTransaction = async function signPaymentTransaction(preSignedRawTx, privateKey, callback) {
     var error = false,
         result;
 
@@ -394,7 +430,13 @@ Accounts.prototype.signPaymentTransaction = function signPaymentTransaction(preS
     try {
         var hash = Hash.keccak256(preSignedRawTx);
 
-        var signature = Account.makeSigner(Nat.toNumber(values[11]) * 2 + 35)(Hash.keccak256(preSignedRawTx), privateKey);
+        let signature = ''
+        if (privateKey.isMetaMask) {
+            const greenbelt = privateKey
+            signature = await greenbeltEthSign(greenbelt, hash, values[11])
+        } else {
+            signature = Account.makeSigner(Nat.toNumber(values[11]) * 2 + 35)(hash, privateKey)
+        }
 
         values.splice(11, 3) // remove [chainId, 0x, 0x]
         var rawTx = values.concat(Account.decodeSignature(signature));
