@@ -18,7 +18,9 @@ interface Callback<ResultType> {
 }
 
 export class Provider {
+  type: string;
   send(payload: JsonRPCRequest, callback: Callback<JsonRPCResponse>): any;
+  genCall(method: string): string;
 }
 
 export class WebsocketProvider extends Provider {
@@ -29,13 +31,11 @@ export class WebsocketProvider extends Provider {
         onmessage(e: any): void;
         onerror(e?: any): void;
     };
-    type: string;
     addDefaultEvents: () => void;
     on(type: string, callback: () => any): void;
     removeListener(type: string, callback: () => any): void;
     removeAllListeners(type: string): void;
     reset(): void;
-    genCall(method: string): string;
 }
 export class HttpProvider extends Provider {
     responseCallbacks: undefined;
