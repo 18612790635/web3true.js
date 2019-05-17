@@ -29,11 +29,13 @@ export class WebsocketProvider extends Provider {
         onmessage(e: any): void;
         onerror(e?: any): void;
     };
+    type: string;
     addDefaultEvents: () => void;
     on(type: string, callback: () => any): void;
     removeListener(type: string, callback: () => any): void;
     removeAllListeners(type: string): void;
     reset(): void;
+    genCall(method: string): string;
 }
 export class HttpProvider extends Provider {
     responseCallbacks: undefined;
