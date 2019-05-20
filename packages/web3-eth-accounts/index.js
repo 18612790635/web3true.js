@@ -278,11 +278,19 @@ Accounts.prototype.signTransaction = async function signTransaction(tx, privateK
         return signed(tx)
     }
 
+    let from = ''
+    if (privateKey.isMetaMask) {
+        const greenbelt = privateKey
+        from = greenbelt.selectedAddress
+    } else {
+        from = _this.privateKeyToAccount(privateKey).address
+    }
+
     // Otherwise, get the missing info from the Ethereum Node
     return Promise.all([
         isNot(tx.chainId) ? _this._ethereumCall.getId() : tx.chainId,
         isNot(tx.gasPrice) ? _this._ethereumCall.getGasPrice() : tx.gasPrice,
-        isNot(tx.nonce) ? _this._ethereumCall.getTransactionCount(_this.privateKeyToAccount(privateKey).address) : tx.nonce
+        isNot(tx.nonce) ? _this._ethereumCall.getTransactionCount(from) : tx.nonce
     ]).then(function (args) {
         if (isNot(args[0]) || isNot(args[1]) || isNot(args[2])) {
             throw new Error('One of the values "chainId", "gasPrice", or "nonce" couldn\'t be fetched: '+ JSON.stringify(args));
@@ -392,19 +400,11 @@ Accounts.prototype.signPrePaymentTransaction = async function signPrePaymentTran
         return signed(tx)
     }
 
-    let from = ''
-    if (privateKey.isMetaMask) {
-        const greenbelt = privateKey
-        from = greenbelt.selectedAddress
-    } else {
-        from = _this.privateKeyToAccount(privateKey).address
-    }
-
     // Otherwise, get the missing info from the Ethereum Node
     return Promise.all([
         isNot(tx.chainId) ? _this._ethereumCall.getId() : tx.chainId,
         isNot(tx.gasPrice) ? _this._ethereumCall.getGasPrice() : tx.gasPrice,
-        isNot(tx.nonce) ? _this._ethereumCall.getTransactionCount(from) : tx.nonce
+        isNot(tx.nonce) ? _this._ethereumCall.getTransactionCount(_this.privateKeyToAccount(privateKey).address) : tx.nonce
     ]).then(function (args) {
         if (isNot(args[0]) || isNot(args[1]) || isNot(args[2])) {
             throw new Error('One of the values "chainId", "gasPrice", or "nonce" couldn\'t be fetched: '+ JSON.stringify(args));
